@@ -10,6 +10,7 @@ namespace DbOperations
     {
         static void Main(string[] args)
         {
+            string proba = " proba";
         }
     }
 }
