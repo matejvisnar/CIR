@@ -51,7 +51,7 @@ namespace CIR_skladisce.Models
 
         [DataType(DataType.Password)]
         [Display(Name = "Ponovi geslo")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [Compare("Geslo", ErrorMessage = "The password and confirmation password do not match.")]
         public string PonovnoGeslo { get; set; }
     }
 }

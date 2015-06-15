@@ -116,7 +116,7 @@ namespace CIR_skladisce.Controllers
             if (ownerAccount == User.Identity.Name)
             {
                 // Use a transaction to prevent the user from deleting their last login credential
-                using (var scope = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions { IsolationLevel = IsolationLevel.Serializable }))
+                using (var scope = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions { IsolationLevel = System.Transactions.IsolationLevel.Serializable }))
                 {
                     bool hasLocalAccount = OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(User.Identity.Name));
                     if (hasLocalAccount || OAuthWebSecurity.GetAccountsFromUserName(User.Identity.Name).Count > 1)
@@ -130,19 +130,12 @@ namespace CIR_skladisce.Controllers
 
             return RedirectToAction("Manage", new { Message = message });
         }
-
+        */
         //
         // GET: /Account/Manage
 
-        public ActionResult Manage(ManageMessageId? message)
+        public ActionResult Manage()
         {
-            ViewBag.StatusMessage =
-                message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
-                : message == ManageMessageId.SetPasswordSuccess ? "Your password has been set."
-                : message == ManageMessageId.RemoveLoginSuccess ? "The external login was removed."
-                : "";
-            ViewBag.HasLocalPassword = OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(User.Identity.Name));
-            ViewBag.ReturnUrl = Url.Action("Manage");
             return View();
         }
 
@@ -208,7 +201,7 @@ namespace CIR_skladisce.Controllers
             // If we got this far, something failed, redisplay form
             return View(model);
         }
-
+        /*
         //
         // POST: /Account/ExternalLogin
 
