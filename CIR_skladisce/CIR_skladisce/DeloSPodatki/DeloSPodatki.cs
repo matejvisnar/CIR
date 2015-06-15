@@ -23,41 +23,47 @@ namespace DbOperations
         #region SELECT
        
         /// <summary>
-        /// PRIMER
+        /// Pridobi uporabnika uporabnika po ID
         /// </summary>
-        /*public DataTable getDogodki()
+        public Uporabnik getUporabnikaID(int ID)
         {
-            DataTable dataTable = new DataTable();
-
             try
             {
-                DbPovezava povezava = new DbPovezava();
-                string sql = @"SELECT d.*, t.*, l.*, COUNT(k.ID) AS St_kom
-                            FROM dogodek d LEFT JOIN lokacija_dogodka l
-                            ON d.LOKACIJA_DOGODKA_ID = l.ID
-                            LEFT JOIN tip_dogodka t
-                            ON d.TIP_DOGODKA_ID = t.ID
-                            LEFT JOIN komentar_ocena_dogodka k
-                            ON k.DOGODEK_ID = d.ID AND k.Deleted = 0
-                            WHERE d.Deleted = 0
-                            GROUP BY d.ID";
-
-                MySqlCommand cmd = new MySqlCommand(sql, povezava.Connection);
                 povezava.odpriPovezavo();
-                povezava.zapriPovezavo();
+                MySqlCommand cmd = povezava.Connection.CreateCommand();
+                cmd.CommandText = "SELECT u.id,u.Ime,u.priimek,u.davcna_st,u.uporabnisko_ime,n.ulica, n.hisna_st, m.kraj, m.posta " +
+                               " FROM UPORABNIK u LEFT JOIN NASLOV n ON u.Naslov_id = n.id "+
+                               " LEFT JOIN MESTO m "+
+                               " ON n.mesto_id = m.id "+
+                               " WHERE u.id = @id ";
+                cmd.Parameters.Add("@id", ID);
+                MySqlDataReader rdr = cmd.ExecuteReader();
 
-                using (MySqlDataAdapter da = new MySqlDataAdapter(cmd))
+                Uporabnik uporabnik = new Uporabnik();
+                while (rdr.Read())
                 {
-                    da.Fill(dataTable);
-                }
+                    Naslov naslov = new Naslov();
+                    naslov.Ulica =Convert.ToString(rdr[5]);
+                    naslov.HisnaSt = Convert.ToString(rdr[6]);
+                    naslov.Mesto = Convert.ToString(rdr[7]);
+                    naslov.PostnaSt =Convert.ToInt32(rdr[8]);
 
-                return dataTable;
+                    uporabnik.Id = Convert.ToInt32(rdr[0]);
+                    uporabnik.Ime = Convert.ToString(rdr[1]);
+                    uporabnik.Priimek = Convert.ToString(rdr[2]);
+                    uporabnik.Davcna = Convert.ToString(rdr[3]);
+                    uporabnik.UporabniskoIme = Convert.ToString(rdr[4]);
+                }
+                rdr.Close();
+                return uporabnik;
+                povezava.zapriPovezavo();
             }
             catch (MySqlException ex)
             {
                 throw;
             }
-        }*/
+
+        }
 
         #endregion
 
