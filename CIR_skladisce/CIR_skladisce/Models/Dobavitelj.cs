@@ -11,6 +11,7 @@ namespace CIR_skladisce.Models
         public string Naziv { get; set; }
         public string Email { get; set; }
         public string Telefon { get; set; }
+        public List<Izdelek> Izdelki { get; set; }
 
         public Dobavitelj()
         {

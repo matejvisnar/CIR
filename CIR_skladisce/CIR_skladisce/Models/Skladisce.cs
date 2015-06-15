@@ -9,6 +9,7 @@ namespace CIR_skladisce.Models
     {
         public int Id { get; set; }
         public string Naziv { get; set; }
+        public Naslov Naslov { get; set; }
         public List<Narocilo> Narocila { get; set; }
 
         public Skladisce()

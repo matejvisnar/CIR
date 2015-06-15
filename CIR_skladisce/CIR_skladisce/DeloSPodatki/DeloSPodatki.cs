@@ -6,11 +6,20 @@ using System.Threading.Tasks;
 
 using System.Data;
 using MySql.Data.MySqlClient;
+using System.Security.Cryptography;
+using CIR_skladisce.Models;
 
 namespace DbOperations
 {
     public class DeloSPodatki
     {
+        private DbPovezava povezava;
+
+        public DeloSPodatki()
+        {
+            povezava = new DbPovezava();
+        }
+
         #region SELECT
        
         /// <summary>
@@ -57,7 +66,7 @@ namespace DbOperations
         /// <summary>
         /// Primer
         /// </summary>
-      /*  public void insertEmail(string email)
+        /*  public void insertEmail(string email)
         {
             try
             {
@@ -103,22 +112,20 @@ namespace DbOperations
 
         #region AVENTIFIKACIJA
         /// <summary>
-        /// Avetifikacija
+        /// Avetifikacija uporabnika
         /// </summary>
-        public DataTable callAventifikacija(string up_ime, string geslo)
+        public DataTable Avtentifikacija(string up_ime, string geslo)
         {
             DataTable dataTable = new DataTable();
 
             try
             {
-                DbPovezava povezava = new DbPovezava();
-
                 povezava.odpriPovezavo();
                 MySqlCommand cmd = povezava.Connection.CreateCommand();
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.CommandText = "avtentifikacija";
                 cmd.Parameters.Add(new MySqlParameter("upIme", up_ime));
-                cmd.Parameters.Add(new MySqlParameter("upGeslo", geslo));
+                cmd.Parameters.Add(new MySqlParameter("upGeslo", gesloHash));
 
                 using (MySqlDataAdapter da = new MySqlDataAdapter(cmd))
                 {
@@ -134,6 +141,33 @@ namespace DbOperations
                 throw;
             }
         }
+        #endregion
+
+        #region REGISTRACIJA
+        /// <summary>
+        /// Registracija uporabnika
+        /// </summary>
+        /// <param name="novUporabnik"></param>
+        public void Registracija(UporabnikRegistartion novUporabnik)
+        {
+            try
+            {
+                povezava.odpriPovezavo();
+                MySqlCommand cmd = povezava.Connection.CreateCommand();
+                cmd.CommandText = "INSERT INTO uporabnik(ime, priimek, uporabnisko_ime, geslo) VALUES (@ime, @priimek, @upIme, SHA1(@geslo))";
+                cmd.Parameters.Add("@ime", novUporabnik.Ime);
+                cmd.Parameters.Add("@priimek", novUporabnik.Priimek);
+                cmd.Parameters.Add("@upIme", novUporabnik.UporabniskoIme);
+                cmd.Parameters.Add("@geslo", novUporabnik.Geslo);
+                cmd.ExecuteNonQuery();
+                povezava.zapriPovezavo();
+            }
+            catch (MySqlException ex)
+            {
+                throw;
+            }
+        }
+
         #endregion
     }
 }

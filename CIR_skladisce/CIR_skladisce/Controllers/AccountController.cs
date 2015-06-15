@@ -10,6 +10,8 @@ using Microsoft.Web.WebPages.OAuth;
 using WebMatrix.WebData;
 using CIR_skladisce.Filters;
 using CIR_skladisce.Models;
+using DbOperations;
+using System.Data;
 
 namespace CIR_skladisce.Controllers
 {
@@ -33,10 +35,15 @@ namespace CIR_skladisce.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public ActionResult Login(LoginModel model, string returnUrl)
+        public ActionResult Login(UporabnikLogin model, string returnUrl)
         {
-            if (ModelState.IsValid && WebSecurity.Login(model.UserName, model.Password, persistCookie: model.RememberMe))
+            DeloSPodatki db = new DeloSPodatki();
+
+            DataTable tabelaUporabnik = db.Avtentifikacija(model.UporabniskoIme, model.Geslo);
+
+            if (tabelaUporabnik.Rows.Count == 1)
             {
+                Session["UserId"] = tabelaUporabnik.Rows[0]["id"].ToString();
                 return RedirectToLocal(returnUrl);
             }
 
@@ -52,7 +59,7 @@ namespace CIR_skladisce.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
-            WebSecurity.Logout();
+            Session.Remove("UserId");
 
             return RedirectToAction("Index", "Home");
         }
@@ -72,15 +79,17 @@ namespace CIR_skladisce.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public ActionResult Register(RegisterModel model)
+        public ActionResult Register(UporabnikRegistartion model)
         {
             if (ModelState.IsValid)
             {
                 // Attempt to register the user
                 try
                 {
-                    WebSecurity.CreateUserAndAccount(model.UserName, model.Password);
-                    WebSecurity.Login(model.UserName, model.Password);
+                    DeloSPodatki db = new DeloSPodatki();
+                    db.Registracija(model);
+
+                    WebSecurity.Login(model.UporabniskoIme, model.Geslo);
                     return RedirectToAction("Index", "Home");
                 }
                 catch (MembershipCreateUserException e)
@@ -92,7 +101,7 @@ namespace CIR_skladisce.Controllers
             // If we got this far, something failed, redisplay form
             return View(model);
         }
-
+        /*
         //
         // POST: /Account/Disassociate
 
@@ -327,7 +336,7 @@ namespace CIR_skladisce.Controllers
             ViewBag.ShowRemoveButton = externalLogins.Count > 1 || OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(User.Identity.Name));
             return PartialView("_RemoveExternalLoginsPartial", externalLogins);
         }
-
+        */
         #region Helpers
         private ActionResult RedirectToLocal(string returnUrl)
         {
