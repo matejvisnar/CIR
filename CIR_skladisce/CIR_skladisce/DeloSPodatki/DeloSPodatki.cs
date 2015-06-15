@@ -125,7 +125,7 @@ namespace DbOperations
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.CommandText = "avtentifikacija";
                 cmd.Parameters.Add(new MySqlParameter("upIme", up_ime));
-                cmd.Parameters.Add(new MySqlParameter("upGeslo", gesloHash));
+                cmd.Parameters.Add(new MySqlParameter("upGeslo", geslo));
 
                 using (MySqlDataAdapter da = new MySqlDataAdapter(cmd))
                 {
