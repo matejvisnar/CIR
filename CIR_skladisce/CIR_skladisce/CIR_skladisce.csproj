@@ -188,9 +188,13 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\Enums\Prioriteta.cs" />
     <Compile Include="Models\Enums\StanjeNarocila.cs" />
+    <Compile Include="Models\Enums\TipInventure.cs" />
+    <Compile Include="Models\Inventura.cs" />
     <Compile Include="Models\Izdelek.cs" />
     <Compile Include="Models\Narocilo.cs" />
+    <Compile Include="Models\Skladisce.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

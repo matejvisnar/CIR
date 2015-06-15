@@ -5,10 +5,11 @@ using System.Web;
 
 namespace CIR_skladisce.Models.Enums
 {
-    public enum StanjeNarocila
+    public enum Prioriteta
     {
-        Potrjeno=1,
-        Preklicano=2,
-        Dostavljeno=3
+        Nizka=1,
+        Normalna=2,
+        Visoka=3,
+        Zelo_visoka=4
     }
 }

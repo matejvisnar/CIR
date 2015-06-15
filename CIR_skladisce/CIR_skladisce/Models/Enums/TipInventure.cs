@@ -5,10 +5,10 @@ using System.Web;
 
 namespace CIR_skladisce.Models.Enums
 {
-    public enum StanjeNarocila
+    public enum TipInventure
     {
-        Potrjeno=1,
-        Preklicano=2,
-        Dostavljeno=3
+        VsiIzdelki=1,
+        SamoDoloceniIzdelki=2,
+        SamoEnIzdelek=3
     }
 }
