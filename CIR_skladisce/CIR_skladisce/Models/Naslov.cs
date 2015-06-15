@@ -13,5 +13,11 @@ namespace CIR_skladisce.Models
         public int Postna_st { get; set; }
         public string Mesto { get; set; }
         public string Drzava { get; set; }
+
+        public Naslov()
+        {
+
+        }
+
     }
 }

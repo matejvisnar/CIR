@@ -14,7 +14,7 @@ namespace CIR_skladisce.Models
 
         public Oseba()
         {
-            
+
         }
     }
 }

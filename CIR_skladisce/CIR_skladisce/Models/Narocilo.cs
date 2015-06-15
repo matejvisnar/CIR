@@ -16,7 +16,6 @@ namespace CIR_skladisce.Models
         public int Kolicina { get; set; }
         public DateTime DatumNarocila { get; set; }
         public string Opombe { get; set; }
-        public Skladisce Skladisce { get; set; }
 
         public Narocilo()
         {
