@@ -54,4 +54,18 @@ namespace CIR_skladisce.Models
         [Compare("Geslo", ErrorMessage = "The password and confirmation password do not match.")]
         public string PonovnoGeslo { get; set; }
     }
+
+    public class UporabnikChangePassword
+    {
+        [Required]
+        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+        [DataType(DataType.Password)]
+        [Display(Name = "Geslo")]
+        public string Geslo { get; set; }
+
+        [DataType(DataType.Password)]
+        [Display(Name = "Ponovi geslo")]
+        [Compare("Geslo", ErrorMessage = "The password and confirmation password do not match.")]
+        public string PonovnoGeslo { get; set; }
+    }
 }

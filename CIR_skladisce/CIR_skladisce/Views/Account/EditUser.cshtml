@@ -1,0 +1,87 @@
+﻿@model CIR_skladisce.Models.Uporabnik
+
+@{
+    ViewBag.Title = "Uredi profil";
+}
+
+<h2>Uredi profil</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>TehnicniPreglednik</legend>
+
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Ime)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Ime)
+            @Html.ValidationMessageFor(model => model.Priimek)
+        </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Priimek)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Priimek)
+            @Html.ValidationMessageFor(model => model.Priimek)
+        </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Naslov.Ulica)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Naslov.Ulica)
+            @Html.ValidationMessageFor(model => model.Naslov.Ulica)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Naslov.HisnaSt)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Naslov.HisnaSt)
+            @Html.ValidationMessageFor(model => model.Naslov.HisnaSt)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Naslov.Mesto)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Naslov.Mesto)
+            @Html.ValidationMessageFor(model => model.Naslov.Mesto)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Naslov.PostnaSt)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Naslov.PostnaSt)
+            @Html.ValidationMessageFor(model => model.Naslov.PostnaSt)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Naslov.Drzava)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Naslov.Drzava)
+            @Html.ValidationMessageFor(model => model.Naslov.Drzava)
+        </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Davcna)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Davcna)
+            @Html.ValidationMessageFor(model => model.Davcna)
+        </div>
+        <p>
+            <input type="submit" value="Shrani" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Nazaj", "Manage")
+</div>

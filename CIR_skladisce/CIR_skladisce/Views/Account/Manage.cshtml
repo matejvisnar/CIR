@@ -1,4 +1,4 @@
-﻿@model CIR_skladisce.Models.LocalPasswordModel
+﻿@model CIR_skladisce.Models.Uporabnik
 @{
     ViewBag.Title = "Pregled in upravljanje računa";
 }
@@ -9,16 +9,42 @@
 
 <p class="message-success">@ViewBag.StatusMessage</p>
 
-<p>You're logged in as <strong>@User.Identity.Name</strong>.</p>
+<p>Prijavljeni ste kot <strong>@User.Identity.Name</strong>.</p>
+<fieldset>
+    <div class="display-label">
+        @Html.DisplayNameFor(model => model.Ime)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Ime)
+    </div>
+    <div class="display-label">
+        @Html.DisplayNameFor(model => model.Priimek)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Priimek)
+    </div>
 
-@*@if (ViewBag.HasLocalPassword)
-{
-    @Html.Partial("_ChangePasswordPartial")
-}
-else
-{ 
-    @Html.Partial("_SetPasswordPartial")
-}*@
+    @if (Model.Naslov != null)
+    {
+        <div class="display-label">
+            @Html.DisplayNameFor(model => model.Naslov)
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.Naslov.Ulica) @Html.DisplayFor(model => model.Naslov.HisnaSt) @Html.DisplayFor(model => model.Naslov.PostnaSt) @Html.DisplayFor(model => model.Naslov.Mesto)
+        </div>   
+    }
+    
+    <div class="display-label">
+        @Html.DisplayNameFor(model => model.Davcna)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Davcna)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Uredi", "EditUser") |
+    @Html.ActionLink("Spremeni geslo", "ChangePassword")
+</p>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
