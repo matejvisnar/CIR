@@ -44,6 +44,7 @@ namespace CIR_skladisce.Controllers
             if (tabelaUporabnik.Rows.Count == 1)
             {
                 Session["UserId"] = tabelaUporabnik.Rows[0]["id"].ToString();
+                Session["UserName"] = tabelaUporabnik.Rows[0]["uporabnisko_ime"].ToString();
                 return RedirectToLocal(returnUrl);
             }
 
@@ -60,6 +61,7 @@ namespace CIR_skladisce.Controllers
         public ActionResult LogOff()
         {
             Session.Remove("UserId");
+            Session.Remove("UserName");
 
             return RedirectToAction("Index", "Home");
         }
@@ -89,8 +91,7 @@ namespace CIR_skladisce.Controllers
                     DeloSPodatki db = new DeloSPodatki();
                     db.Registracija(model);
 
-                    WebSecurity.Login(model.UporabniskoIme, model.Geslo);
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Login", "Account");
                 }
                 catch (MembershipCreateUserException e)
                 {
@@ -174,7 +175,8 @@ namespace CIR_skladisce.Controllers
 
             if (ModelState.IsValid)
             {
-                //db.UpdateUporabnik(uporabnik);
+                db.updateUporabnik(uporabnik);
+                return RedirectToAction("Manage");
             }
 
             return View(uporabnik);
@@ -190,17 +192,23 @@ namespace CIR_skladisce.Controllers
         //
         // POST: /Account/ChangePassword
 
-        /*[HttpPost]
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult ChangePassword(UporabnikChangePassword newPass)
         {
-            DeloSPodatki db = new DeloSPodatki();
-            db.spremeniGeslo(Convert.ToInt32(Session["UserId"]), newPass.Geslo);
+            if (ModelState.IsValid)
+            {
+                DeloSPodatki db = new DeloSPodatki();
+                db.spremeniGeslo(Convert.ToInt32(Session["UserId"]), newPass.Geslo);
 
-            Uporabnik uporabnik = db.getUporabnikaID(Convert.ToInt32(Session["UserId"]));
-
-            return View(uporabnik);
-        }*/
+                return RedirectToAction("Manage");   
+            }
+            else
+            {
+                ModelState.AddModelError("", new ArgumentException("Napaka pri spremembi gesla"));
+                return View();
+            }
+        }
 
         #region Helpers
         private ActionResult RedirectToLocal(string returnUrl)
