@@ -38,12 +38,12 @@ namespace CIR_skladisce.Controllers
         public ActionResult Login(UporabnikLogin model, string returnUrl)
         {
             DeloSPodatki db = new DeloSPodatki();
-
             DataTable tabelaUporabnik = db.Avtentifikacija(model.UporabniskoIme, model.Geslo);
 
             if (tabelaUporabnik.Rows.Count == 1)
             {
                 Session["UserId"] = tabelaUporabnik.Rows[0]["id"].ToString();
+                Session["UserName"] = tabelaUporabnik.Rows[0]["uporabnisko_ime"].ToString();
                 return RedirectToLocal(returnUrl);
             }
 
@@ -60,6 +60,7 @@ namespace CIR_skladisce.Controllers
         public ActionResult LogOff()
         {
             Session.Remove("UserId");
+            Session.Remove("UserName");
 
             return RedirectToAction("Index", "Home");
         }
@@ -89,8 +90,7 @@ namespace CIR_skladisce.Controllers
                     DeloSPodatki db = new DeloSPodatki();
                     db.Registracija(model);
 
-                    WebSecurity.Login(model.UporabniskoIme, model.Geslo);
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Login", "Account");
                 }
                 catch (MembershipCreateUserException e)
                 {
@@ -101,36 +101,7 @@ namespace CIR_skladisce.Controllers
             // If we got this far, something failed, redisplay form
             return View(model);
         }
-        /*
-        //
-        // POST: /Account/Disassociate
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Disassociate(string provider, string providerUserId)
-        {
-            string ownerAccount = OAuthWebSecurity.GetUserName(provider, providerUserId);
-            ManageMessageId? message = null;
-
-            // Only disassociate the account if the currently logged in user is the owner
-            if (ownerAccount == User.Identity.Name)
-            {
-                // Use a transaction to prevent the user from deleting their last login credential
-                using (var scope = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions { IsolationLevel = System.Transactions.IsolationLevel.Serializable }))
-                {
-                    bool hasLocalAccount = OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(User.Identity.Name));
-                    if (hasLocalAccount || OAuthWebSecurity.GetAccountsFromUserName(User.Identity.Name).Count > 1)
-                    {
-                        OAuthWebSecurity.DeleteAccount(provider, providerUserId);
-                        scope.Complete();
-                        message = ManageMessageId.RemoveLoginSuccess;
-                    }
-                }
-            }
-
-            return RedirectToAction("Manage", new { Message = message });
-        }
-        */
         //
         // GET: /Account/Manage
 
@@ -170,11 +141,11 @@ namespace CIR_skladisce.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult EditUser(Uporabnik uporabnik)
         {
-            DeloSPodatki db = new DeloSPodatki();
-
             if (ModelState.IsValid)
             {
-                //db.UpdateUporabnik(uporabnik);
+                DeloSPodatki db = new DeloSPodatki();
+                db.updateUporabnik(uporabnik);
+                return RedirectToAction("Manage");
             }
 
             return View(uporabnik);
@@ -190,17 +161,23 @@ namespace CIR_skladisce.Controllers
         //
         // POST: /Account/ChangePassword
 
-        /*[HttpPost]
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult ChangePassword(UporabnikChangePassword newPass)
         {
-            DeloSPodatki db = new DeloSPodatki();
-            db.spremeniGeslo(Convert.ToInt32(Session["UserId"]), newPass.Geslo);
+            if (ModelState.IsValid)
+            {
+                DeloSPodatki db = new DeloSPodatki();
+                db.spremeniGeslo(Convert.ToInt32(Session["UserId"]), newPass.Geslo);
 
-            Uporabnik uporabnik = db.getUporabnikaID(Convert.ToInt32(Session["UserId"]));
-
-            return View(uporabnik);
-        }*/
+                return RedirectToAction("Manage");   
+            }
+            else
+            {
+                ModelState.AddModelError("", new ArgumentException("Napaka pri spremembi gesla"));
+                return View();
+            }
+        }
 
         #region Helpers
         private ActionResult RedirectToLocal(string returnUrl)

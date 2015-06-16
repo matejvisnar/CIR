@@ -9,13 +9,46 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
+
+
+<div id="tabs">
+
+    <ul>
+        <li><a href="#tabs-1">Tab Header 1</a></li>
+        <li><a href="#tabs-2">Tab Header 2</a></li>
+        <li><a href="#tabs-3">Tab Header 3</a></li>
+    </ul>
+
+    <div id="tabs-1">
+        Content for Tab 1 goes here.<br />
+        Lorem ipsum dolor sit amet, consectetuer adipiscing elit,
+        sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
+    </div>
+
+    <div id="tabs-2">
+        Content for Tab 2 goes here.<br />
+        Lorem ipsum dolor sit amet, consectetuer adipiscing elit,
+        sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
+    </div>
+
+    <div id="tabs-3">
+        Content for Tab 3 goes here.<br />
+        Lorem ipsum dolor sit amet, consectetuer adipiscing elit,
+        sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
+    </div>
+
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        $("#tabs").tabs();
+    });
+</script>
+
 <table>
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.Id)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.SeLahkoProdaja)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.TipIzdelka)
@@ -24,16 +57,13 @@
             @Html.DisplayNameFor(model => model.Naziv)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Opis)
-        </th>
-        <th>
             @Html.DisplayNameFor(model => model.ProdajnaCena)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.OdkupnaCena)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.GarancijaMes)
+            @Html.DisplayNameFor(model => model.Zaloga.DejanskaZaloga)
         </th>
         <th></th>
     </tr>
@@ -44,16 +74,10 @@
             @Html.DisplayFor(modelItem => item.Id)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.SeLahkoProdaja)
-        </td>
-        <td>
             @Html.DisplayFor(modelItem => item.TipIzdelka)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Naziv)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Opis)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.ProdajnaCena)
@@ -62,7 +86,7 @@
             @Html.DisplayFor(modelItem => item.OdkupnaCena)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.GarancijaMes)
+            @Html.DisplayFor(modelItem => item.Zaloga.DejanskaZaloga)
         </td>
         <td>
             @Html.ActionLink("Uredi", "Edit", new { id=item.Id }) |
