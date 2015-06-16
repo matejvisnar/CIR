@@ -19,13 +19,6 @@ namespace CIR_skladisce.Controllers
     [InitializeSimpleMembership]
     public class AccountController : Controller
     {
-        private DeloSPodatki db;
-
-        public AccountController()
-        {
-            db = new DeloSPodatki();
-        }
-
         //
         // GET: /Account/Login
 
@@ -44,12 +37,13 @@ namespace CIR_skladisce.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login(UporabnikLogin model, string returnUrl)
         {
+            DeloSPodatki db = new DeloSPodatki();
+
             DataTable tabelaUporabnik = db.Avtentifikacija(model.UporabniskoIme, model.Geslo);
 
             if (tabelaUporabnik.Rows.Count == 1)
             {
                 Session["UserId"] = tabelaUporabnik.Rows[0]["id"].ToString();
-                Session["UserName"] = tabelaUporabnik.Rows[0]["uporabnisko_ime"].ToString();
                 return RedirectToLocal(returnUrl);
             }
 
@@ -66,7 +60,6 @@ namespace CIR_skladisce.Controllers
         public ActionResult LogOff()
         {
             Session.Remove("UserId");
-            Session.Remove("UserName");
 
             return RedirectToAction("Index", "Home");
         }
@@ -93,9 +86,11 @@ namespace CIR_skladisce.Controllers
                 // Attempt to register the user
                 try
                 {
+                    DeloSPodatki db = new DeloSPodatki();
                     db.Registracija(model);
 
-                    return RedirectToAction("Login", "Account");
+                    WebSecurity.Login(model.UporabniskoIme, model.Geslo);
+                    return RedirectToAction("Index", "Home");
                 }
                 catch (MembershipCreateUserException e)
                 {
@@ -141,6 +136,7 @@ namespace CIR_skladisce.Controllers
 
         public ActionResult Manage()
         {
+            DeloSPodatki db = new DeloSPodatki();
             Uporabnik uporabnik = db.getUporabnikaID(Convert.ToInt32(Session["UserId"]));
 
             if (uporabnik == null)
@@ -156,6 +152,7 @@ namespace CIR_skladisce.Controllers
 
         public ActionResult EditUser()
         {
+            DeloSPodatki db = new DeloSPodatki();
             Uporabnik uporabnik = db.getUporabnikaID(Convert.ToInt32(Session["UserId"]));
 
             if (uporabnik == null)
@@ -173,10 +170,11 @@ namespace CIR_skladisce.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult EditUser(Uporabnik uporabnik)
         {
+            DeloSPodatki db = new DeloSPodatki();
+
             if (ModelState.IsValid)
             {
-                db.updateUporabnik(uporabnik);
-                return RedirectToAction("Manage");
+                //db.UpdateUporabnik(uporabnik);
             }
 
             return View(uporabnik);
@@ -192,22 +190,17 @@ namespace CIR_skladisce.Controllers
         //
         // POST: /Account/ChangePassword
 
-        [HttpPost]
+        /*[HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult ChangePassword(UporabnikChangePassword newPass)
         {
-            if (ModelState.IsValid)
-            {
-                db.spremeniGeslo(Convert.ToInt32(Session["UserId"]), newPass.Geslo);
+            DeloSPodatki db = new DeloSPodatki();
+            db.spremeniGeslo(Convert.ToInt32(Session["UserId"]), newPass.Geslo);
 
-                return RedirectToAction("Manage");   
-            }
-            else
-            {
-                ModelState.AddModelError("", new ArgumentException("Napaka pri spremembi gesla"));
-                return View();
-            }
-        }
+            Uporabnik uporabnik = db.getUporabnikaID(Convert.ToInt32(Session["UserId"]));
+
+            return View(uporabnik);
+        }*/
 
         #region Helpers
         private ActionResult RedirectToLocal(string returnUrl)
