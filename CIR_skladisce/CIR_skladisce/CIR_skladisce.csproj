@@ -200,11 +200,13 @@
     <Compile Include="Models\Enums\TipInventure.cs" />
     <Compile Include="Models\Inventura.cs" />
     <Compile Include="Models\Izdelek.cs" />
+    <Compile Include="Controllers\IzdelekController.cs" />
     <Compile Include="Models\Narocilo.cs" />
     <Compile Include="Models\Naslov.cs" />
     <Compile Include="Models\Oseba.cs" />
     <Compile Include="Models\Skladisce.cs" />
     <Compile Include="Models\Uporabnik.cs" />
+    <Compile Include="Models\ZalogaIzdelka.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -320,6 +322,8 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\Account\ChangePassword.cshtml" />
     <Content Include="Views\Account\EditUser.cshtml" />
+    <Content Include="Views\Izdelek\SeznamIzdelkov.cshtml" />
+    <Content Include="Views\Izdelek\PodrobnostiIzdelka.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

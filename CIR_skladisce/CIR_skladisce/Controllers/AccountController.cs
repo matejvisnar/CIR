@@ -19,6 +19,13 @@ namespace CIR_skladisce.Controllers
     [InitializeSimpleMembership]
     public class AccountController : Controller
     {
+        private DeloSPodatki db;
+
+        public AccountController()
+        {
+            db = new DeloSPodatki();
+        }
+
         //
         // GET: /Account/Login
 
@@ -37,8 +44,6 @@ namespace CIR_skladisce.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login(UporabnikLogin model, string returnUrl)
         {
-            DeloSPodatki db = new DeloSPodatki();
-
             DataTable tabelaUporabnik = db.Avtentifikacija(model.UporabniskoIme, model.Geslo);
 
             if (tabelaUporabnik.Rows.Count == 1)
@@ -88,7 +93,6 @@ namespace CIR_skladisce.Controllers
                 // Attempt to register the user
                 try
                 {
-                    DeloSPodatki db = new DeloSPodatki();
                     db.Registracija(model);
 
                     return RedirectToAction("Login", "Account");
@@ -137,7 +141,6 @@ namespace CIR_skladisce.Controllers
 
         public ActionResult Manage()
         {
-            DeloSPodatki db = new DeloSPodatki();
             Uporabnik uporabnik = db.getUporabnikaID(Convert.ToInt32(Session["UserId"]));
 
             if (uporabnik == null)
@@ -153,7 +156,6 @@ namespace CIR_skladisce.Controllers
 
         public ActionResult EditUser()
         {
-            DeloSPodatki db = new DeloSPodatki();
             Uporabnik uporabnik = db.getUporabnikaID(Convert.ToInt32(Session["UserId"]));
 
             if (uporabnik == null)
@@ -171,8 +173,6 @@ namespace CIR_skladisce.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult EditUser(Uporabnik uporabnik)
         {
-            DeloSPodatki db = new DeloSPodatki();
-
             if (ModelState.IsValid)
             {
                 db.updateUporabnik(uporabnik);
@@ -198,7 +198,6 @@ namespace CIR_skladisce.Controllers
         {
             if (ModelState.IsValid)
             {
-                DeloSPodatki db = new DeloSPodatki();
                 db.spremeniGeslo(Convert.ToInt32(Session["UserId"]), newPass.Geslo);
 
                 return RedirectToAction("Manage");   

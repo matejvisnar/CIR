@@ -1,0 +1,57 @@
+﻿@model CIR_skladisce.Models.Izdelek
+
+@{
+    ViewBag.Title = "PodrobnostiIzdelka";
+}
+
+<h2>PodrobnostiIzdelka</h2>
+
+<fieldset>
+    <legend>Izdelek</legend>
+
+    <div class="display-label">
+        @Html.DisplayNameFor(model => model.Id)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Id)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Naziv)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Naziv)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Opis)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Opis)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.ProdajnaCena)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.ProdajnaCena)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.OdkupnaCena)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.OdkupnaCena)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.GarancijaMes)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.GarancijaMes)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
