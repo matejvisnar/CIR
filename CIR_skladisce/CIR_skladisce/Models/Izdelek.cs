@@ -23,6 +23,7 @@ namespace CIR_skladisce.Models
         public int GarancijaMes { get; set; }
         public List<Narocilo> Narocila { get; set; }
         public List<Dobavitelj> Dobavitelji { get; set; }
+        public ZalogaIzdelka Zaloga { get; set; }
 
         public Izdelek()
         {

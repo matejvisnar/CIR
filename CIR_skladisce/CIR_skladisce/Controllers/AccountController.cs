@@ -19,13 +19,6 @@ namespace CIR_skladisce.Controllers
     [InitializeSimpleMembership]
     public class AccountController : Controller
     {
-        private DeloSPodatki db;
-
-        public AccountController()
-        {
-            db = new DeloSPodatki();
-        }
-
         //
         // GET: /Account/Login
 
@@ -44,6 +37,7 @@ namespace CIR_skladisce.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login(UporabnikLogin model, string returnUrl)
         {
+            DeloSPodatki db = new DeloSPodatki();
             DataTable tabelaUporabnik = db.Avtentifikacija(model.UporabniskoIme, model.Geslo);
 
             if (tabelaUporabnik.Rows.Count == 1)
@@ -93,6 +87,7 @@ namespace CIR_skladisce.Controllers
                 // Attempt to register the user
                 try
                 {
+                    DeloSPodatki db = new DeloSPodatki();
                     db.Registracija(model);
 
                     return RedirectToAction("Login", "Account");
@@ -106,41 +101,13 @@ namespace CIR_skladisce.Controllers
             // If we got this far, something failed, redisplay form
             return View(model);
         }
-        /*
-        //
-        // POST: /Account/Disassociate
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Disassociate(string provider, string providerUserId)
-        {
-            string ownerAccount = OAuthWebSecurity.GetUserName(provider, providerUserId);
-            ManageMessageId? message = null;
-
-            // Only disassociate the account if the currently logged in user is the owner
-            if (ownerAccount == User.Identity.Name)
-            {
-                // Use a transaction to prevent the user from deleting their last login credential
-                using (var scope = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions { IsolationLevel = System.Transactions.IsolationLevel.Serializable }))
-                {
-                    bool hasLocalAccount = OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(User.Identity.Name));
-                    if (hasLocalAccount || OAuthWebSecurity.GetAccountsFromUserName(User.Identity.Name).Count > 1)
-                    {
-                        OAuthWebSecurity.DeleteAccount(provider, providerUserId);
-                        scope.Complete();
-                        message = ManageMessageId.RemoveLoginSuccess;
-                    }
-                }
-            }
-
-            return RedirectToAction("Manage", new { Message = message });
-        }
-        */
         //
         // GET: /Account/Manage
 
         public ActionResult Manage()
         {
+            DeloSPodatki db = new DeloSPodatki();
             Uporabnik uporabnik = db.getUporabnikaID(Convert.ToInt32(Session["UserId"]));
 
             if (uporabnik == null)
@@ -156,6 +123,7 @@ namespace CIR_skladisce.Controllers
 
         public ActionResult EditUser()
         {
+            DeloSPodatki db = new DeloSPodatki();
             Uporabnik uporabnik = db.getUporabnikaID(Convert.ToInt32(Session["UserId"]));
 
             if (uporabnik == null)
@@ -175,6 +143,7 @@ namespace CIR_skladisce.Controllers
         {
             if (ModelState.IsValid)
             {
+                DeloSPodatki db = new DeloSPodatki();
                 db.updateUporabnik(uporabnik);
                 return RedirectToAction("Manage");
             }
@@ -198,6 +167,7 @@ namespace CIR_skladisce.Controllers
         {
             if (ModelState.IsValid)
             {
+                DeloSPodatki db = new DeloSPodatki();
                 db.spremeniGeslo(Convert.ToInt32(Session["UserId"]), newPass.Geslo);
 
                 return RedirectToAction("Manage");   

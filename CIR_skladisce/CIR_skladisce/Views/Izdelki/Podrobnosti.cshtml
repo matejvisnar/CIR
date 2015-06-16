@@ -17,10 +17,24 @@
     </div>
 
     <div class="display-label">
+        @Html.DisplayNameFor(model => model.SeLahkoProdaja)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.SeLahkoProdaja)
+    </div>
+
+    <div class="display-label">
          @Html.DisplayNameFor(model => model.Naziv)
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Naziv)
+    </div>
+
+    <div class="display-label">
+        @Html.DisplayNameFor(model => model.TipIzdelka)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.TipIzdelka)
     </div>
 
     <div class="display-label">
@@ -52,6 +66,6 @@
     </div>
 </fieldset>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Uredi", "Edit", new { id=Model.Id }) |
+    @Html.ActionLink("Nazaj na seznam", "Index")
 </p>
