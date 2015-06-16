@@ -3,54 +3,49 @@
     ViewBag.Title = "Pregled in upravljanje računa";
 }
 
-@if (Session["UserId"] != null) {
-    <hgroup class="title">
-        <h1>@ViewBag.Title.</h1>
-    </hgroup>
+<hgroup class="title">
+    <h1>@ViewBag.Title.</h1>
+</hgroup>
 
-    <p class="message-success">@ViewBag.StatusMessage</p>
+<p class="message-success">@ViewBag.StatusMessage</p>
 
-    <p>Prijavljeni ste kot <strong>@Model.UporabniskoIme</strong>.</p>
-    <fieldset>
+<p>Prijavljeni ste kot <strong>@User.Identity.Name</strong>.</p>
+<fieldset>
+    <div class="display-label">
+        @Html.DisplayNameFor(model => model.Ime)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Ime)
+    </div>
+    <div class="display-label">
+        @Html.DisplayNameFor(model => model.Priimek)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Priimek)
+    </div>
+
+    @if (Model.Naslov != null)
+    {
         <div class="display-label">
-            @Html.DisplayNameFor(model => model.Ime)
+            @Html.DisplayNameFor(model => model.Naslov)
         </div>
         <div class="display-field">
-            @Html.DisplayFor(model => model.Ime)
-        </div>
-        <div class="display-label">
-            @Html.DisplayNameFor(model => model.Priimek)
-        </div>
-        <div class="display-field">
-            @Html.DisplayFor(model => model.Priimek)
-        </div>
-
-        @if (Model.Naslov != null)
-        {
-            <div class="display-label">
-                @Html.DisplayNameFor(model => model.Naslov)
-            </div>
-            <div class="display-field">
-                @Html.DisplayFor(model => model.Naslov.Ulica) @Html.DisplayFor(model => model.Naslov.HisnaSt), @Html.DisplayFor(model => model.Naslov.PostnaSt) @Html.DisplayFor(model => model.Naslov.Mesto), @Html.DisplayFor(model => model.Naslov.Drzava)
-            </div>   
-        }
+            @Html.DisplayFor(model => model.Naslov.Ulica) @Html.DisplayFor(model => model.Naslov.HisnaSt) @Html.DisplayFor(model => model.Naslov.PostnaSt) @Html.DisplayFor(model => model.Naslov.Mesto)
+        </div>   
+    }
     
-        <div class="display-label">
-            @Html.DisplayNameFor(model => model.Davcna)
-        </div>
-        <div class="display-field">
-            @Html.DisplayFor(model => model.Davcna)
-        </div>
-    </fieldset>
-    <p>
-        @Html.ActionLink("Uredi", "EditUser") |
-        @Html.ActionLink("Spremeni geslo", "ChangePassword")
-    </p>
-} 
-else
-{
-    <h1>Niste prijavljeni.</h1>
-}
+    <div class="display-label">
+        @Html.DisplayNameFor(model => model.Davcna)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Davcna)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Uredi", "EditUser") |
+    @Html.ActionLink("Spremeni geslo", "ChangePassword")
+</p>
+
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
